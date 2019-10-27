@@ -21,10 +21,18 @@
     (wav-p stream)))
 
 (defmethod wav-p ((stream input-stream))
-  (and (= (char-code #\W) (read stream))
-       (= (char-code #\A) (read stream))
-       (= (char-code #\V) (read stream))
-       (= (char-code #\E) (read stream))))
+  (let* ((c1 (read stream))
+         (c2 (read stream))
+         (c3 (read stream))
+         (c4 (read stream)))
+    (or (and (= (char-code #\W) c1)
+             (= (char-code #\A) c2)
+             (= (char-code #\V) c3)
+             (= (char-code #\E) c4))
+        (and (= (char-code #\R) c1)
+             (= (char-code #\I) c2)
+             (= (char-code #\F) c3)
+             (= (char-code #\F) c4)))))
 
 (defparameter *media-type-handlers*
   '((:flac . flac-p)
